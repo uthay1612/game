@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stone Paper Scissors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 20px 0;
+            color: #2c3e50;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #34495e;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .choice-button {
+            margin: 10px;
+            cursor: pointer;
+            font-size: 2rem;
+            transition: transform 0.2s;
+        }
+
+        .choice-button:hover {
+            transform: scale(1.2);
+        }
+
+        #result {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: #16a085;
+        }
+
+        #score {
+            font-size: 1.3rem;
+            margin-top: 10px;
+            color: #8e44ad;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Stone Paper Scissors</h1>
+    <p>Choose your move:</p>
+
+    <div class="button-container">
+        <div class="choice-button" onclick="playGame('stone')">
+            🪨
+        </div>
+        <div class="choice-button" onclick="playGame('paper')">
+            📄
+        </div>
+        <div class="choice-button" onclick="playGame('scissors')">
+            ✂️
+        </div>
+    </div>
+
+    <h2 id="result"></h2>
+    <h3 id="score">Player: 0 | Computer: 0</h3>
+
+    <footer>Enjoy the game! Refresh the page to restart.</footer>
+
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+
+        function getComputerChoice() {
+            const choices = ['stone', 'paper', 'scissors'];
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+
+        function determineWinner(player, computer) {
+            if (player === computer) {
+                return "It's a tie!";
+            } else if (
+                (player === 'stone' && computer === 'scissors') ||
+                (player === 'scissors' && computer === 'paper') ||
+                (player === 'paper' && computer === 'stone')
+            ) {
+                playerScore++;
+                return "You win this round!";
+            } else {
+                computerScore++;
+                return "Computer wins this round!";
+            }
+        }
+
+        function playGame(playerChoice) {
+            if (playerScore >= 10 || computerScore >= 10) {
+                document.getElementById('result').innerHTML = "Game over! Please refresh to play again.";
+                return;
+            }
+
+            const computerChoice = getComputerChoice();
+            const result = determineWinner(playerChoice, computerChoice);
+            
+            document.getElementById('result').innerHTML = `You chose: ${getEmoji(playerChoice)}<br>Computer chose: ${getEmoji(computerChoice)}<br>${result}`;
+            document.getElementById('score').innerHTML = `Player: ${playerScore} | Computer: ${computerScore}`;
+
+            if (playerScore >= 10) {
+                document.getElementById('result').innerHTML += "<br><strong>Congratulations! You won the game!</strong>";
+            } else if (computerScore >= 10) {
+                document.getElementById('result').innerHTML += "<br><strong>Computer wins the game! Better luck next time!</strong>";
+            }
+        }
+
+        function getEmoji(choice) {
+            switch (choice) {
+                case 'stone':
+                    return '🪨'; // Stone emoji
+                case 'paper':
+                    return '📄'; // Paper emoji
+                case 'scissors':
+                    return '✂️'; // Scissors emoji
+                default:
+                    return '';
+            }
+        }
+    </script>
+</body>
+</html>
